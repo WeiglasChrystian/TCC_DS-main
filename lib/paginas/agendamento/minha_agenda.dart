@@ -13,6 +13,8 @@ class MinhaAgenda extends StatelessWidget {
 
   const MinhaAgenda(this.usuario, {Key? key}) : super(key: key);
 
+  AgendaModel? get agenda => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +48,28 @@ class MinhaAgenda extends StatelessWidget {
                             "${snapshot.data![index].horario.toString().substring(0, 16)} - ${snapshot.data![index].quadra.endereco} - ${snapshot.data![index].quadra.bairro} - ${snapshot.data![index].quadra.cidade}"),
                         trailing: IconButton(
                           icon: Icon(Icons.cancel),
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text("Deseja cancelar o agendamento?"),
+                                content: Text(
+                                    "Você irá apagar todos os dados do agendamento"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        AgendaRepository().deletar(agenda!);
+                                      },
+                                      child: Text("Sim")),
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text("Não")),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                       );
                     });
