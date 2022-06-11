@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tcc/models/agenda_model.dart';
+import 'package:tcc/models/usuario_model.dart';
 import 'package:tcc/repositorios/agenda_repository.dart';
 
 import '../../models/quadra_model.dart';
 
 class Calendario extends StatefulWidget {
   QuadraModel quadraModel;
-  Calendario(this.quadraModel, {Key? key}) : super(key: key);
+  UsuarioModel usuario;
+  Calendario(this.quadraModel, this.usuario, {Key? key}) : super(key: key);
 
   @override
   _CalendarioState createState() => _CalendarioState();
@@ -108,13 +110,13 @@ class _CalendarioState extends State<Calendario> {
     for (DateTime horario = abre;
         horario.isBefore(fecha);
         horario = horario.add(Duration(hours: 1))) {
-      horarios.add(AgendaModel(quadra, horario));
+      horarios.add(AgendaModel(quadra, horario, widget.usuario.id!));
     }
     return horarios;
   }
 
   void _carregarHorarios(DateTime data, QuadraModel quadra) {
-    AgendaRepository().listar(widget.quadraModel).then((agendado) {
+    AgendaRepository().listar(quadraId: widget.quadraModel.id).then((agendado) {
       var horas = _geraHorarios(data, widget.quadraModel);
       var _horarios = <AgendaModel>[];
 

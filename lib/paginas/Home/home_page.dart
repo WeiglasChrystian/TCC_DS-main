@@ -44,8 +44,8 @@ class HomePage extends StatelessWidget {
                       return ListTile(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    Calendario(snapshot.data![index]))),
+                                builder: (context) => Calendario(
+                                    snapshot.data![index], usuario!))),
                         leading: SizedBox(
                             height: 100,
                             width: 100,
@@ -115,8 +115,10 @@ class HomePage extends StatelessWidget {
                     leading: Icon(Icons.calendar_today),
                     title: Text("Minha Agenda"),
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => MinhaAgenda(usuario)));
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) {
+                        return MinhaAgenda(usuario);
+                      }));
                     },
                   ),
                 ),

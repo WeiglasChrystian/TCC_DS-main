@@ -18,16 +18,30 @@ class AgendaRepository {
     }
   }
 
-  Future<List<AgendaModel>> listar(QuadraModel quadra) async {
+  Future<List<AgendaModel>> listar(
+      {String? usuarioId, String? quadraId}) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference<Map<String, dynamic>> col =
         firestore.collection("agendas");
-    var query = col.where("quadra.id", isEqualTo: quadra.id);
-    QuerySnapshot<Map<String, dynamic>> docs = await query.get();
+
+    Query<Map<String, dynamic>>? query;
+
+    if (quadraId != null) {
+      query = col.where("quadra.id", isEqualTo: quadraId);
+    }
+
+    if (usuarioId != null) {
+      query = col.where("usuarioId", isEqualTo: usuarioId);
+    }
+
+    QuerySnapshot<Map<String, dynamic>> docs = await query!.get();
     return docs.docs.map((e) => AgendaModel.fromMap(e.data())).toList();
   }
 
-  Future<void> deletar(AgendaModel agenda) async {
-    await FirebaseFirestore.instance.collection("agendas").doc().delete();
+  Future<void> delete(String id) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    CollectionReference<Map<String, dynamic>> col =
+        firestore.collection("agendas");
+    await col.doc(id).delete();
   }
 }

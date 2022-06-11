@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:tcc/models/quadra_model.dart';
 import 'package:tcc/models/usuario_model.dart';
 
 import '../../models/agenda_model.dart';
@@ -15,6 +14,8 @@ class MinhaAgenda extends StatelessWidget {
 
   AgendaModel? get agenda => null;
 
+  String? get id => null;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +23,7 @@ class MinhaAgenda extends StatelessWidget {
         title: Text("Minha Agenda", textAlign: TextAlign.center),
       ),
       body: FutureBuilder<List<AgendaModel>>(
-          future: AgendaRepository().listar(QuadraModel()),
+          future: AgendaRepository().listar(usuarioId: usuario!.id),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? Center(
@@ -58,7 +59,7 @@ class MinhaAgenda extends StatelessWidget {
                                 actions: [
                                   TextButton(
                                       onPressed: () {
-                                        AgendaRepository().deletar(agenda!);
+                                        AgendaRepository().delete(id!);
                                       },
                                       child: Text("Sim")),
                                   TextButton(
