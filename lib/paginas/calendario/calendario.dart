@@ -21,6 +21,7 @@ class _CalendarioState extends State<Calendario> {
   var dataformato;
   var agenda = <AgendaModel>[];
   var horarios = <AgendaModel>[];
+  var carregando = false;
 
   @override
   void initState() {
@@ -71,33 +72,41 @@ class _CalendarioState extends State<Calendario> {
         body: Center(
             child: Padding(
           padding: const EdgeInsets.all(28.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: horarios.map(
-                (e) {
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green,
-                        onSurface: Colors.grey,
-                        elevation: 10,
+          child: carregando
+              ? CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Colors.white),
+                )
+              : Wrap(
+                  children: horarios.map(
+                  (e) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green,
+                          onSurface: Colors.grey,
+                          elevation: 10,
+                        ),
+                        child:
+                            Text(e.horario.toString().substring(11, 13) + "h"),
+                        onPressed: e.id != null
+                            ? null
+                            : () async {
+                                try {
+                                  setState(() {
+                                    carregando = true;
+                                  });
+                                  await AgendaRepository().salvar(e);
+                                  _carregarHorarios(_date, widget.quadraModel);
+                                } catch (e) {
+                                  carregando = false;
+                                  print(e);
+                                }
+                              },
                       ),
-                      child: Text(e.horario.toString().substring(11, 13) + "h"),
-                      onPressed: e.id != null
-                          ? null
-                          : () async {
-                              try {
-                                await AgendaRepository().salvar(e);
-                                _carregarHorarios(_date, widget.quadraModel);
-                              } catch (e) {
-                                print(e);
-                              }
-                            },
-                    ),
-                  );
-                },
-              ).toList()),
+                    );
+                  },
+                ).toList()),
         )));
   }
 
@@ -116,6 +125,10 @@ class _CalendarioState extends State<Calendario> {
   }
 
   void _carregarHorarios(DateTime data, QuadraModel quadra) {
+    setState(() {
+      carregando = true;
+    });
+
     AgendaRepository().listar(quadraId: widget.quadraModel.id).then((agendado) {
       var horas = _geraHorarios(data, widget.quadraModel);
       var _horarios = <AgendaModel>[];
@@ -135,6 +148,7 @@ class _CalendarioState extends State<Calendario> {
       }
       setState(() {
         horarios = _horarios;
+        carregando = false;
       });
     });
   }

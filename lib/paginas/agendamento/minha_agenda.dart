@@ -7,15 +7,16 @@ import 'package:tcc/models/usuario_model.dart';
 import '../../models/agenda_model.dart';
 import '../../repositorios/agenda_repository.dart';
 
-class MinhaAgenda extends StatelessWidget {
+class MinhaAgenda extends StatefulWidget {
   final UsuarioModel? usuario;
 
   const MinhaAgenda(this.usuario, {Key? key}) : super(key: key);
 
-  AgendaModel? get agenda => null;
+  @override
+  State<MinhaAgenda> createState() => _MinhaAgendaState();
+}
 
-  String? get id => null;
-
+class _MinhaAgendaState extends State<MinhaAgenda> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +24,7 @@ class MinhaAgenda extends StatelessWidget {
         title: Text("Minha Agenda", textAlign: TextAlign.center),
       ),
       body: FutureBuilder<List<AgendaModel>>(
-          future: AgendaRepository().listar(usuarioId: usuario!.id),
+          future: AgendaRepository().listar(usuarioId: widget.usuario!.id),
           builder: (context, snapshot) {
             return !snapshot.hasData
                 ? Center(
@@ -58,8 +59,11 @@ class MinhaAgenda extends StatelessWidget {
                                     "Você irá apagar todos os dados do agendamento"),
                                 actions: [
                                   TextButton(
-                                      onPressed: () {
-                                        AgendaRepository().delete(id!);
+                                      onPressed: () async {
+                                        await AgendaRepository()
+                                            .delete(snapshot.data![index].id!);
+                                        Navigator.pop(context);
+                                        setState(() {});
                                       },
                                       child: Text("Sim")),
                                   TextButton(

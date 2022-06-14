@@ -131,6 +131,22 @@ class _QuadraFormState extends State<QuadraForm> {
                 },
               ),
               InputField(
+                "Preço por Hora",
+                Icons.description_outlined,
+                false,
+                initialValue: "${quadra.precoHora}",
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "Campo não pode ficar vazio";
+                  }
+                  return null;
+                },
+                onsaved: (value) {
+                  quadra.precoHora = value;
+                },
+              ),
+              InputField(
                 "Hora do funcionamento ",
                 Icons.description_outlined,
                 false,

@@ -14,7 +14,7 @@ class AgendaRepository {
       await col.doc("${agenda.id}").update(agenda.toJson());
     } else {
       var doc = await col.add(agenda.toJson());
-      doc.update({'id': doc.id});
+      await doc.update({'id': doc.id});
     }
   }
 

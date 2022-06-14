@@ -10,6 +10,7 @@ class QuadraModel {
 
   String? horaAberto;
   String? horaFecha;
+  String? precoHora;
 
   static final quadras = [
     QuadraModel(),
@@ -25,7 +26,8 @@ class QuadraModel {
       this.imagem,
       this.telefone,
       this.horaAberto,
-      this.horaFecha});
+      this.horaFecha,
+      this.precoHora});
 
   Map<String, dynamic> toJson() {
     return {
@@ -38,21 +40,24 @@ class QuadraModel {
       "imagem": imagem,
       "telefone": telefone,
       "Hora que abre": horaAberto,
-      "Hora que fecha": horaFecha
+      "Hora que fecha": horaFecha,
+      "PrecoHora": precoHora
     };
   }
 
   factory QuadraModel.fromMap(Map<String, dynamic> map) {
     return QuadraModel(
-        id: map['id'],
-        nome: map['nome'],
-        endereco: map['endereço'],
-        bairro: map['Bairro'],
-        cidade: map['cidade'],
-        numero: map['número'],
-        imagem: map['imagem'],
-        telefone: map['telefone'],
-        horaAberto: map['Hora que abre'],
-        horaFecha: map['Hora que fecha']);
+      id: map['id'],
+      nome: map['nome'],
+      endereco: map['endereço'],
+      bairro: map['Bairro'],
+      cidade: map['cidade'],
+      numero: map['número'],
+      imagem: map['imagem'],
+      telefone: map['telefone'],
+      horaAberto: map['Hora que abre'],
+      horaFecha: map['Hora que fecha'],
+      precoHora: map['PrecoHora'],
+    );
   }
 }
