@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'models/usuario_model.dart';
 
-
-class FotoUsuario{
+class FotoUsuario {
   getFoto(UsuarioModel usuario) {
-    if (usuario.foto!=null) {
+    if (usuario.foto != null && usuario.foto!.isNotEmpty) {
       if (usuario.foto!.contains("https")) {
         return NetworkImage(usuario.foto!);
       } else {
@@ -16,6 +15,5 @@ class FotoUsuario{
     } else {
       return ExactAssetImage("image/pessoa.jpg");
     }
-    
   }
 }

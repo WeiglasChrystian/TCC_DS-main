@@ -55,7 +55,7 @@ class HomePage extends StatelessWidget {
                             )),
                         title: Text(snapshot.data![index].nome ?? ""),
                         subtitle: Text(
-                            "${snapshot.data![index].endereco} - ${snapshot.data![index].bairro} - ${snapshot.data![index].cidade}"),
+                            "${snapshot.data![index].endereco} - ${snapshot.data![index].bairro} - ${snapshot.data![index].cidade} -  ${snapshot.data![index].cidade} Reais"),
                       );
                     });
           }),

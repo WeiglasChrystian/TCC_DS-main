@@ -20,7 +20,7 @@ class QuadraRepository {
       doc.update({'id': doc.id});
     }
 
-    if (quadra.imagem != null) {
+    if (quadra.imagem != null && quadra.imagem!.isNotEmpty) {
       var filename = quadra.id! + ".jpg";
       var ref = FirebaseStorage.instance.ref(filename);
       await ref.putData(base64Decode(quadra.imagem!));

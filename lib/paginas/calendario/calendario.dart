@@ -77,10 +77,9 @@ class _CalendarioState extends State<Calendario> {
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                 )
               : Wrap(
-                  children: horarios.map(
-                  (e) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
+                  children: horarios.map((e) {
+                  return Padding(
+                      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.green,
@@ -92,21 +91,38 @@ class _CalendarioState extends State<Calendario> {
                         onPressed: e.id != null
                             ? null
                             : () async {
-                                try {
-                                  setState(() {
-                                    carregando = true;
-                                  });
-                                  await AgendaRepository().salvar(e);
-                                  _carregarHorarios(_date, widget.quadraModel);
-                                } catch (e) {
-                                  carregando = false;
-                                  print(e);
-                                }
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                            title:
+                                                Text("Confirmar Agendamento?"),
+                                            actions: [
+                                              TextButton(
+                                                  child: Text("Sim"),
+                                                  onPressed: () async {
+                                                    try {
+                                                      setState(() {
+                                                        carregando = true;
+                                                      });
+                                                      await AgendaRepository()
+                                                          .salvar(e);
+                                                      _carregarHorarios(_date,
+                                                          widget.quadraModel);
+                                                    } catch (e) {
+                                                      carregando = false;
+                                                      print(e);
+                                                    }
+                                                    Navigator.pop(context);
+                                                  }),
+                                              TextButton(
+                                                  child: Text("Não"),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  })
+                                            ]));
                               },
-                      ),
-                    );
-                  },
-                ).toList()),
+                      ));
+                }).toList()),
         )));
   }
 

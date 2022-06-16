@@ -5,6 +5,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import 'package:image_picker/image_picker.dart';
+import 'package:tcc/models/usuario_model.dart';
+
 import 'package:tcc/paginas/widgets/input_field.dart';
 
 import '../../models/quadra_model.dart';
@@ -21,6 +23,8 @@ class QuadraForm extends StatefulWidget {
 class _QuadraFormState extends State<QuadraForm> {
   GlobalKey<FormState> _key = GlobalKey<FormState>();
   QuadraModel quadra = QuadraModel();
+
+  UsuarioModel? get usuario => null;
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +191,8 @@ class _QuadraFormState extends State<QuadraForm> {
                             } catch (e) {
                               print(e);
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text("Falha ao Salvar!")));
+                                  SnackBar(
+                                      content: Text("Salvo com sucesso!")));
                             }
                           }
                         },
